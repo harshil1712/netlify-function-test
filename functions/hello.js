@@ -8,7 +8,11 @@ exports.handler = async function (event, context) {
 			body: 'The page can not be found. Try sending a POST request',
 		};
 	}
-	if (!event.body || !event.body.url) {
+
+	if (
+		event.body === '[object Object]' ||
+		!Object.keys(JSON.parse(event.body)).includes('url')
+	) {
 		return {
 			statusCode: 400,
 			body: JSON.stringify({ error: 'The "url" parameter is required' }),
